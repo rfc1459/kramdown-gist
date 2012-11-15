@@ -18,9 +18,8 @@
 
 
 module Kramdown
-  # @private
-  module Gist
-    # @private
-    VERSION = "0.0.1"
+  module Parser
+    # Version of {Kramdown::Parser::KramdownGist}
+    KRAMDOWN_GIST_VERSION = "0.0.1"
   end
 end

@@ -5,7 +5,7 @@ require 'kramdown-gist/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "kramdown-gist"
-  gem.version       = Kramdown::Gist::VERSION
+  gem.version       = Kramdown::Parser::KRAMDOWN_GIST_VERSION
   gem.platform      = Gem::Platform::RUBY
   gem.authors       = ["Matteo Panella"]
   gem.email         = ["morpheus@level28.org"]
@@ -17,6 +17,9 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency('yard', '~> 0.8.3')
   gem.add_development_dependency('bundler', '>= 1.0.0')
+  gem.add_development_dependency('rspec', '~> 2.12.0')
+  gem.add_development_dependency('redcarpet', '~> 2.0')
+  gem.add_development_dependency('github-markup', '~> 0.7.4')
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

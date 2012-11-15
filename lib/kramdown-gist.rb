@@ -25,10 +25,17 @@ require 'kramdown/parser/kramdown/block_boundary'
 module Kramdown
   module Parser
 
-    # Gist-enabled Kramdown parser.
-    class KramdownGist < Kramdown
+    # Standard Kramdown parser with support for embedding GitHub Gists
+    # in the output.
+    #
+    # This class extends the default Kramdown syntax with a new block-level
+    # element for embedding gists: `*{gist:<id>}`. The element is rendered
+    # as a `<script>` tag pointing to `http://gist.github.com/<id>.js`.
+    #
+    # @author Matteo Panella
+    class KramdownGist < ::Kramdown::Parser::Kramdown
 
-     # Create a new gist-enabled Kramdown parser with the given +options+.
+     # Create a new gist-enabled Kramdown parser with the given `options`.
      def initialize(source, options)
         super
         @block_parsers.unshift(:gist)
@@ -37,7 +44,8 @@ module Kramdown
       # @private
       GIST_START = /^#{OPT_SPACE}\*\{gist:(\h+?)\}\n/
 
-      # @private
+      # Do not use this method directly, it's used internally by Kramdown.
+      # @api private
       def parse_gist
         @src.pos += @src.matched_size
         gist_id = @src[1]
