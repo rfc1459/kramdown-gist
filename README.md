@@ -67,7 +67,7 @@ will be replaced with an appropriate `<script>` tag.
 Known issues
 ------------
 
-There is no support for LaTeX or kramdown output.
+LaTeX output sucks, contributions are more than welcome.
 
 
 Contributing

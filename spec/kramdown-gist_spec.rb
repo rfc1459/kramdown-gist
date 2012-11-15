@@ -35,4 +35,12 @@ describe Kramdown::Parser::KramdownGist do
     ::Kramdown::Document.new("testing 123 *{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123 *{gist:1234}</p>\n")
     ::Kramdown::Document.new("testing 123\n*{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123\n*{gist:1234}</p>\n")
   end
+
+  it "is idempotent when generating kramdown" do
+    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_kramdown eql("*{gist:1234}\n")
+  end
+
+  it "renders to a suitable placeholder when generating LaTeX" do
+    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_latex eql("See \\href{https://gist.github.com/1234}{Gist 1234}.\n\n")
+  end
 end

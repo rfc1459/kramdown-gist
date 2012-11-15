@@ -20,9 +20,15 @@ require 'kramdown-gist/version'
 
 require 'kramdown'
 require 'kramdown/parser/kramdown'
-require 'kramdown/parser/kramdown/block_boundary'
 
 module Kramdown
+
+  # @private
+  class Element
+    # Register :gist as a block-level element
+    CATEGORY[:gist] = :block
+  end
+
   module Parser
 
     # Standard Kramdown parser with support for embedding GitHub Gists
@@ -41,6 +47,7 @@ module Kramdown
         @block_parsers.unshift(:gist)
       end
 
+      # Regex for matching a gist tag
       # @private
       GIST_START = /^#{OPT_SPACE}\*\{gist:(\h+?)\}\n/
 
@@ -49,13 +56,50 @@ module Kramdown
       def parse_gist
         @src.pos += @src.matched_size
         gist_id = @src[1]
-        @tree.children << Element.new(:raw,
-          "<script src=\"http://gist.github.com/#{gist_id}.js\"></script>",
-          nil, { :category => :block })
+        @tree.children << Element.new(:gist, nil, {'gist-id' => gist_id})
       end
       define_parser(:gist, GIST_START)
 
     end
 
+  end
+
+  module Converter
+    class Html
+
+      # Convert a gist element into a `<script>` tag suitable for embedding.
+      #
+      # @return [String] an HTML fragment representing this element
+      # @api private
+      def convert_gist(el, indent)
+        "#{' '*indent}<script src=\"http://gist.github.com/#{el.attr['gist-id']}.js\"></script>\n"
+      end
+
+    end
+
+    class Kramdown
+
+      # Convert a gist element into the equivalent Kramdown "tag"
+      #
+      # @return [String] an Kramdown fragment representing this element
+      # @api private
+      def convert_gist(el, opts)
+        "*{gist:#{el.attr['gist-id']}}\n"
+      end
+    end
+
+    class Latex
+
+      # Convert a gist element into a LaTeX paragraph stating the Gist ID and
+      # including the target hyperlink as metadata suitable for some output
+      # formats (PDF).
+      #
+      # @return [String] a LaTeX fragment representing this element
+      # @api private
+      def convert_gist(el, opts)
+        gist_id = el.attr['gist-id']
+        "See \\href{https://gist.github.com/#{gist_id}}{Gist #{gist_id}}.\n\n"
+      end
+    end
   end
 end
