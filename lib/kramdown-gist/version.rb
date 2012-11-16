@@ -20,6 +20,6 @@
 module Kramdown
   module Parser
     # Version of {Kramdown::Parser::KramdownGist}
-    KRAMDOWN_GIST_VERSION = "0.0.1"
+    KRAMDOWN_GIST_VERSION = "0.0.2"
   end
 end
