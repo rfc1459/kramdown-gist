@@ -78,3 +78,23 @@ describe Kramdown::Parser::KramdownGist do
     end
   end
 end
+
+describe Kramdown::Parser::Html do
+  context "when parsing a simple script tag" do
+    let(:jquery)      { '<script src="http://code.jquery.com/jquery.min.js"></script>' }
+    let(:mathjax_src) { '<script type="math/tex; mode=display">1</script>' }
+    let(:mathjax_out) { "$$1$$\n\n" }
+
+    it "should convert embedded gists to gist tags" do
+      ::Kramdown::Document.new('<script src="https://gist.github.com/42.js"></script>', :input => 'html').to_kramdown.should eql("*{gist:42}\n\n")
+    end
+
+    it "should leave non-gist script tags as they are" do
+      ::Kramdown::Document.new(jquery, :input => 'html').to_kramdown.should eql("#{jquery}\n\n")
+    end
+
+    it "should convert MathJax script tags to LaTeX math blocks" do
+      ::Kramdown::Document.new(mathjax_src, :input => 'html').to_kramdown.should eql(mathjax_out)
+    end
+  end
+end

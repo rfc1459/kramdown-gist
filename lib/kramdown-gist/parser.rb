@@ -18,4 +18,5 @@
 
 # Kramdown parser
 require 'kramdown-gist/parser/kramdown'
-# TODO: html parser
+# HTML parser
+require 'kramdown-gist/parser/html'
