@@ -72,7 +72,7 @@ module Kramdown
       # @return [String] an HTML fragment representing this element
       # @api private
       def convert_gist(el, indent)
-        "#{' '*indent}<script src=\"http://gist.github.com/#{el.value}.js\"></script>\n"
+        "#{' '*indent}<script src=\"https://gist.github.com/#{el.value}.js\"></script>\n"
       end
 
     end

@@ -20,11 +20,11 @@ require 'kramdown-gist'
 
 describe Kramdown::Parser::KramdownGist do
   it "converts a valid public gist tag to a script tag" do
-    ::Kramdown::Document.new("*{gist:1234}\n", :input => 'KramdownGist').to_html.should eql("<script src=\"http://gist.github.com/1234.js\"></script>\n")
+    ::Kramdown::Document.new("*{gist:1234}\n", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/1234.js\"></script>\n")
   end
 
   it "converts a valid private gist tag to a script tag" do
-    ::Kramdown::Document.new("*{gist:deadbeef}", :input => 'KramdownGist').to_html.should eql("<script src=\"http://gist.github.com/deadbeef.js\"></script>\n")
+    ::Kramdown::Document.new("*{gist:deadbeef}", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/deadbeef.js\"></script>\n")
   end
 
   it "falls back to default behaviour on malformed tag" do
