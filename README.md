@@ -1,4 +1,8 @@
-# kramdown-gist [![Build Status](https://travis-ci.org/rfc1459/kramdown-gist.png)](https://travis-ci.org/rfc1459/kramdown-gist)
+kramdown-gist
+=============
+
+[![Build Status](https://travis-ci.org/rfc1459/kramdown-gist.png)](https://travis-ci.org/rfc1459/kramdown-gist)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/rfc1459/kramdown-gist)
 
 This gem extends the default [kramdown][] parser with a new block-level
 element which adds support for embedding [GitHub Gists][gists] via
