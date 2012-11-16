@@ -37,10 +37,10 @@ describe Kramdown::Parser::KramdownGist do
   end
 
   it "is idempotent when generating kramdown" do
-    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_kramdown eql("*{gist:1234}\n")
+    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_kramdown.should eql("*{gist:1234}\n\n")
   end
 
   it "renders to a suitable placeholder when generating LaTeX" do
-    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_latex eql("See \\href{https://gist.github.com/1234}{Gist 1234}.\n\n")
+    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_latex.should eql("See \\href{https://gist.github.com/1234}{Gist 1234}.\n\n")
   end
 end
