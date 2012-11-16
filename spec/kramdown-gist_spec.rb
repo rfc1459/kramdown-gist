@@ -19,28 +19,62 @@
 require 'kramdown-gist'
 
 describe Kramdown::Parser::KramdownGist do
-  it "converts a valid public gist tag to a script tag" do
-    ::Kramdown::Document.new("*{gist:1234}\n", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/1234.js\"></script>\n")
+  context "when parsing a simple block" do
+    it "converts a valid public gist tag to a script tag" do
+      ::Kramdown::Document.new("*{gist:1234}\n", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/1234.js\"></script>\n")
+    end
+
+    it "converts a valid private gist tag to a script tag" do
+      ::Kramdown::Document.new("*{gist:deadbeef}", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/deadbeef.js\"></script>\n")
+    end
+
+    it "falls back to default behaviour when the tag is malformed" do
+      ::Kramdown::Document.new("*{gist:antani}", :input => 'KramdownGist').to_html.should eql("<p>*{gist:antani}</p>\n")
+    end
+
+    it "does not treat the gist tag as a span-level element" do
+      ::Kramdown::Document.new("testing 123 *{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123 *{gist:1234}</p>\n")
+      ::Kramdown::Document.new("testing 123\n*{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123\n*{gist:1234}</p>\n")
+    end
+
+    it "is idempotent when generating kramdown" do
+      ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_kramdown.should eql("*{gist:1234}\n\n")
+    end
+
+    it "renders to a suitable placeholder when generating LaTeX" do
+      ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_latex.should eql("See \\href{https://gist.github.com/1234}{Gist 1234}.\n\n")
+    end
   end
 
-  it "converts a valid private gist tag to a script tag" do
-    ::Kramdown::Document.new("*{gist:deadbeef}", :input => 'KramdownGist').to_html.should eql("<script src=\"https://gist.github.com/deadbeef.js\"></script>\n")
-  end
+  context "when parsing a complex document" do
+    # Standard kramdown source and rendered files
+    let(:standard_src)    { IO.read(File.expand_path("../fixtures/standard.md", __FILE__)) }
+    let(:standard_html)   { IO.read(File.expand_path("../fixtures/standard.html", __FILE__)) }
+    let(:standard_latex)  { IO.read(File.expand_path("../fixtures/standard.tex", __FILE__)) }
 
-  it "falls back to default behaviour on malformed tag" do
-    ::Kramdown::Document.new("*{gist:antani}", :input => 'KramdownGist').to_html.should eql("<p>*{gist:antani}</p>\n")
-  end
+    # KramdownGist source and rendered files
+    let(:gist_src)    { IO.read(File.expand_path("../fixtures/gist.md", __FILE__)) }
+    let(:gist_html)   { IO.read(File.expand_path("../fixtures/gist.html", __FILE__)) }
+    let(:gist_latex)  { IO.read(File.expand_path("../fixtures/gist.tex", __FILE__)) }
 
-  it "does not treat the gist tag as a span-level element" do
-    ::Kramdown::Document.new("testing 123 *{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123 *{gist:1234}</p>\n")
-    ::Kramdown::Document.new("testing 123\n*{gist:1234}", :input => 'KramdownGist').to_html.should eql("<p>testing 123\n*{gist:1234}</p>\n")
-  end
+    context "without gist tags" do
+      it "produces valid HTML output" do
+        ::Kramdown::Document.new(standard_src, :input => 'KramdownGist').to_html.should eql(standard_html)
+      end
 
-  it "is idempotent when generating kramdown" do
-    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_kramdown.should eql("*{gist:1234}\n\n")
-  end
+      it "produces valid LaTeX output" do
+        ::Kramdown::Document.new(standard_src, :input => 'KramdownGist').to_latex.should eql(standard_latex)
+      end
+    end
 
-  it "renders to a suitable placeholder when generating LaTeX" do
-    ::Kramdown::Document.new("*{gist:1234}", :input => 'KramdownGist').to_latex.should eql("See \\href{https://gist.github.com/1234}{Gist 1234}.\n\n")
+    context "with gist tags" do
+      it "produces valid HTML output" do
+        ::Kramdown::Document.new(gist_src, :input => 'KramdownGist').to_html.should eql(gist_html)
+      end
+
+      it "produces valid LaTeX output" do
+        ::Kramdown::Document.new(gist_src, :input => 'KramdownGist').to_latex.should eql(gist_latex)
+      end
+    end
   end
 end
