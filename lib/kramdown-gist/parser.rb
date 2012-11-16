@@ -1,6 +1,6 @@
 # encoding: utf-8
 #
-# kramdown-gist.rb - Kramdown extension for gist tags
+# parser.rb - gist-enabled parsers for Kramdown
 # Copyright (C) 2012 Matteo Panella <morpheus@level28.org>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'kramdown-gist/version'
-
-require 'kramdown'
-
-module Kramdown
-
-  # Monkey-patch Element class to include :gist as a block-level element
-  # @private
-  class Element
-    # Register :gist as a block-level element
-    CATEGORY[:gist] = :block
-  end
-
-end
-
-require 'kramdown-gist/parser'
-require 'kramdown-gist/converter'
+# Kramdown parser
+require 'kramdown-gist/parser/kramdown'
+# TODO: html parser
