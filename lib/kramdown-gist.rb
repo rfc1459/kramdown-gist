@@ -56,7 +56,7 @@ module Kramdown
       def parse_gist
         @src.pos += @src.matched_size
         gist_id = @src[1]
-        @tree.children << Element.new(:gist, nil, {'gist-id' => gist_id})
+        @tree.children << Element.new(:gist, gist_id)
       end
       define_parser(:gist, GIST_START)
 
@@ -72,7 +72,7 @@ module Kramdown
       # @return [String] an HTML fragment representing this element
       # @api private
       def convert_gist(el, indent)
-        "#{' '*indent}<script src=\"http://gist.github.com/#{el.attr['gist-id']}.js\"></script>\n"
+        "#{' '*indent}<script src=\"http://gist.github.com/#{el.value}.js\"></script>\n"
       end
 
     end
@@ -84,7 +84,7 @@ module Kramdown
       # @return [String] an Kramdown fragment representing this element
       # @api private
       def convert_gist(el, opts)
-        "*{gist:#{el.attr['gist-id']}}\n"
+        "*{gist:#{el.value}}\n"
       end
     end
 
@@ -97,7 +97,7 @@ module Kramdown
       # @return [String] a LaTeX fragment representing this element
       # @api private
       def convert_gist(el, opts)
-        gist_id = el.attr['gist-id']
+        gist_id = el.value
         "See \\href{https://gist.github.com/#{gist_id}}{Gist #{gist_id}}.\n\n"
       end
     end
