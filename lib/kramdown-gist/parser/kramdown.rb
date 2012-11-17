@@ -31,15 +31,15 @@ module Kramdown
     # @author Matteo Panella
     class KramdownGist < ::Kramdown::Parser::Kramdown
 
-     # Create a new gist-enabled Kramdown parser with the given `options`.
-     def initialize(source, options)
+      # Create a new gist-enabled Kramdown parser with the given `options`.
+      def initialize(source, options)
         super
         @block_parsers.unshift(:gist)
       end
 
       # Regex for matching a gist tag
       # @private
-      GIST_START = /^#{OPT_SPACE}\*\{gist:(\h+?)\}\n/
+      GIST_START = /^#{OPT_SPACE}\*\{gist:([0-9a-fA-F]+?)\}\n/
 
       # Do not use this method directly, it's used internally by Kramdown.
       # @api private

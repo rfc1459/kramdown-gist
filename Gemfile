@@ -1,4 +1,9 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in kramdown-gist.gemspec
+# RVM metadata
+
+#ruby=1.9.3
+#ruby-gemset=kramdown-gist
+
+# Use kramdown-gist.gemspec for dependencies
 gemspec

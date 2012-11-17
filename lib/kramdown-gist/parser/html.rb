@@ -37,12 +37,12 @@ module Kramdown
         #   of the tag.
         #   @api private
         define_method(:convert_script) do |el|
-          if %r{^https?://gist.github.com/(?<gist_id>\h+)\.js$} =~ el.attr['src']
+          if %r{^https?://gist.github.com/([0-9a-fA-F]+)\.js$} =~ el.attr['src']
             # We're in business, convert el to a gist element
             set_basics(el, :gist)
-            el.value = gist_id
+            el.value = $1
             el.children.clear
-            el.attr.clear
+            el.attr.delete('src')
           else
             # Fall back to the original method
             original_convert_script.bind(self).call(el)
