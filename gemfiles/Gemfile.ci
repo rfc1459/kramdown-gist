@@ -1,0 +1,12 @@
+# encoding: utf-8
+
+source :rubygems
+
+# (Re)-Define rspec dependency in a separate group
+# so that we can exclude yard et al. from Travis builds
+group :test do
+  gem 'rspec', '~> 2.12.0'
+end
+
+# Pull everything else from the gemspec
+gemspec
