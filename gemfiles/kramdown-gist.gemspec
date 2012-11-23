@@ -1,1 +1,0 @@
-../kramdown-gist.gemspec
