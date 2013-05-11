@@ -92,4 +92,4 @@ GPLv3 &mdash; see `COPYING` for more information
 [kramdown]: http://kramdown.rubyforge.org/
 [km-syntax]: http://kramdown.rubyforge.org/syntax.html
 [gists]: https://gist.github.com/
-[nanoc]: http://nanoc.stoneship.org/
+[nanoc]: http://nanoc.ws/
